@@ -1,4 +1,9 @@
+.vscode
+
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+.venv
+venv
