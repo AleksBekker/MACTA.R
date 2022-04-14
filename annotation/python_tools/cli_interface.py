@@ -1,8 +1,12 @@
+import argparse
 
 
-def parse_annotation_args():
+def parse_annotation_args() -> argparse.Namespace:
+    '''Parse command-line arguments.
 
-    import argparse
+    Returns:
+        argparse.Namespace: contains all parsed arguments and their values
+    '''
 
     # Set up parser
     parser = argparse.ArgumentParser()
@@ -81,7 +85,8 @@ def parse_annotation_args():
     return parser.parse_args()
 
 
-def main():
+def main() -> None:
+    '''Run the annotation method from CLI.'''
 
     raw_args = parse_annotation_args()
 
@@ -101,7 +106,8 @@ def main():
 
     from annotate import annotate
     annotation_results = annotate(expr_data, ref_data, annot_type,
-                                  annot_tools=annot_tools, result_type=result_type)
+                                  annot_tools=annot_tools, result_type=result_type,
+                                  **annotation_kwargs)
 
     from utils.save_results import save_results
     save_results(annotation_results,
