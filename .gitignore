@@ -4,8 +4,3 @@
 .Rhistory
 .RData
 .Ruserdata
-
-.venv
-venv
-
-__pycache__
