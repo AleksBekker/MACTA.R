@@ -12,8 +12,8 @@ CTAInterface <- setClass(
 
     # Slots
     slots = c(
-        annotate_func,
-        convert_func,
+        annotate_func = "function",
+        convert_func = "function"
     ),
 
     # Default values
@@ -33,8 +33,8 @@ setGeneric("annotate_func", function(x) standardGeneric("annotate_func"))
 setGeneric("annotate_func<-", function(x, v) standardGeneric("annotate_func<-"))
 
 # TODO: add documentation
-setMethod("annotate_func", "CTATool", function(x) x@annotate_func)
-setMethod("annotate_func<-", "CTATool", function(x, v) {
+setMethod("annotate_func", "CTAInterface", function(x) x@annotate_func)
+setMethod("annotate_func<-", "CTAInterface", function(x, v) {
     x@annotate_func <- value
 })
 
@@ -44,8 +44,8 @@ setGeneric("convert_func", function(x) standardGeneric("convert_func"))
 setGeneric("convert_func<-", function(x, v) standardGeneric("convert_func<-"))
 
 # TODO: add documentation
-setMethod("convert_func", "CTATool", function(x) x@convert_func)
-setMethod("convert_func<-", "CTATool", function(x, v) {
+setMethod("convert_func", "CTAInterface", function(x) x@convert_func)
+setMethod("convert_func<-", "CTAInterface", function(x, v) {
     x@convert_func <- v
 })
 
