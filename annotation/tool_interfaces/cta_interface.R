@@ -3,12 +3,12 @@ library(methods)
 
 library(magrittr)
 
-# `CTATool` class declaration --------------------------------------------------
+# `CTAInterface` class declaration ---------------------------------------------
 
-CTATool <- setClass(
+CTAInterface <- setClass(
 
     # Name
-    "CTATool",
+    "CTAInterface",
 
     # Slots
     slots = c(
@@ -60,9 +60,10 @@ setGeneric(
 
 setMethod(
     "run_full",
-    definition = function(cta_tool, expr_data, ref_data, labels_col, convert_to, ...) {
-        annotate_func(cta_tool)(expr_data, ref_data, labels_col, ...) %>%
-            convert_func(cta_tool)(convert_to, ...) %>%
+    definition = function(cta_interface, expr_data, ref_data, labels_col,
+                          convert_to, ...) {
+        annotate_func(cta_interface)(expr_data, ref_data, labels_col, ...) %>%
+            convert_func(cta_interface)(convert_to, ...) %>%
             return()
     }
 )
