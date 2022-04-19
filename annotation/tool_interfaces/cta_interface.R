@@ -7,63 +7,59 @@ library(magrittr)
 
 CTAInterface <- setClass(
 
-    # Name
-    "CTAInterface",
+  # Name
+  "CTAInterface",
 
-    # Slots
-    slots = c(
-        annotate_func = "function",
-        convert_func = "function"
-    ),
+  # Slots
+  slots = c(
+    annotate_func = "function",
+    convert_func = "function"
+  ),
 
-    # Default values
-    prototype = list(
-        annotate_func = function(expr_data, ref_data, labels_col, ...) {
-            stderr("`annotation_func` must be implemented by subclasses")
-        },
-        convert_func = function(results, convert_to, ...) {
-            stderr("`conversion_func` must be implemented by subclasses")
-        }
-    )
+  # Default values
+  prototype = list(
+    annotate_func = function(expr_data, ref_data, labels, 
+                             expr_type = "logcounts", ref_type = "logcounts", 
+                             ...) {
+      stderr("`annotation_func` must be implemented by subclasses")
+    },
+    convert_func = function(results, convert_to, ...) {
+      stderr("`conversion_func` must be implemented by subclasses")
+    }
+  )
 )
 
-# `annotate_func` getters and setters ------------------------------------------
+# `annotate_func` and `convert_func` getters -----------------------------------
 
-setGeneric("annotate_func", function(x) standardGeneric("annotate_func"))
-setGeneric("annotate_func<-", function(x, v) standardGeneric("annotate_func<-"))
-
-# TODO: add documentation
-setMethod("annotate_func", "CTAInterface", function(x) x@annotate_func)
-setMethod("annotate_func<-", "CTAInterface", function(x, v) {
-    x@annotate_func <- value
-})
-
-# `convert_func` getters and setters -------------------------------------------
-
-setGeneric("convert_func", function(x) standardGeneric("convert_func"))
-setGeneric("convert_func<-", function(x, v) standardGeneric("convert_func<-"))
-
-# TODO: add documentation
-setMethod("convert_func", "CTAInterface", function(x) x@convert_func)
-setMethod("convert_func<-", "CTAInterface", function(x, v) {
-    x@convert_func <- v
-})
+annotate_func <- function(cta_interface) cta_interface@annotate_func
+convert_func <- function(cta_interface) cta_interface@convert_func
 
 # `run_full` function implementation -------------------------------------------
 
-setGeneric(
-    "run_full",
-    function(cta_tool, expr_data, ref_data, labels_col, convert_to, ...) {
-        standardGeneric("run_full")
-    }
-)
 
-setMethod(
-    "run_full",
-    definition = function(cta_interface, expr_data, ref_data, labels_col,
-                          convert_to, ...) {
-        annotate_func(cta_interface)(expr_data, ref_data, labels_col, ...) %>%
-            convert_func(cta_interface)(convert_to, ...) %>%
-            return()
-    }
-)
+run_full <- function(cta_interface, expr_data, ref_data, labels,
+                     convert_to, expr_type = "logcounts",
+                     ref_type = "logcounts", ...) {
+  #' Runs `annotate_func` then `convert_func` on a data set
+  #'
+  #' @param expr_data experimental data, on which CTA is performed
+  #' @param ref_data reference/marker data for the CTA anaysis
+  #' @param labels string name of the labels column in `ref_data`
+  #' @param annot_type which type of CTA to perform <marker/ref>
+  #' @param annot_tools `character` of test names to perform, '*' selects all
+  #' @param convert_to output data format
+  #' @param tool_interfaces list of interfaces the program will use
+  #'
+  #' @returns a list of  test_name -> test_results
+
+  expr_data = preprocess_expr_func(cta_interface)(expr_data, ...)
+  ref_data = preprocess_ref_func(cta_interface)(ref_data, ...)
+  labels = preprocess_labels_func(cta_interface)(labels, ref_data, ...)
+  convert_to = preprocess_convert_to_func(cta_interface)(convert_to, ...)
+  
+  annotate_func(cta_interface)(expr_data, ref_data, labels, 
+                               expr_type = expr_type, ref_type = ref_type,
+                               ...) %>%
+    convert_func(cta_interface)(convert_to, ...) %>%
+    return()
+}
