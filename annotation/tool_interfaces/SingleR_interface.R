@@ -1,8 +1,9 @@
 
-library(magrittr)
+suppressWarnings(library(SingleR))
+
+suppressWarnings(library(magrittr))
 
 source("annotation/tool_interfaces/cta_interface.R")
-
 
 
 SingleR_interface <- CTAInterface(
@@ -14,7 +15,6 @@ SingleR_interface <- CTAInterface(
     #' @param ref_data reference data in the form of a logcounts `matrix` or
     #' a `SummarizedExperiment` containing such a matrix in its `logcounts`
     #' assay
-    #' @param labels `character` containing labels column for `ref_data`
     #'
     #' @returns `DFrame` object containing `SingleR` results
 
@@ -25,7 +25,7 @@ SingleR_interface <- CTAInterface(
     ) %>% c(list(...), .)
 
     # Run `SingleR` analysis
-    SingleR::SingleR(
+    SingleR(
       test = expr_data,
       ref = ref_data,
       labels = args.labels,

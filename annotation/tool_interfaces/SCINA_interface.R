@@ -1,8 +1,8 @@
 
-library(preprocessCore)
-library(SCINA)
+suppressWarnings(library(preprocessCore))
+suppressWarnings(library(SCINA))
 
-library(magrittr)
+suppressWarnings(library(magrittr))
 
 source("annotation/tool_interfaces/cta_interface.R")
 
@@ -21,7 +21,7 @@ SCINA_interface <- CTAInterface(
     ) %>% c(list(...), .)
 
     if (args$expr_type == "counts") {
-      exp[] <- expr_data %>%
+      exp[] = expr_data %>%
         as.matrix() %>%
         log(. + 1) %>%
         normalize.quantiles()

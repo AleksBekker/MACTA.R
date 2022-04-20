@@ -1,7 +1,7 @@
 
-library(methods)
+suppressWarnings(library(methods))
 
-library(magrittr)
+suppressWarnings(library(magrittr))
 
 # `CTAInterface` class declaration ---------------------------------------------
 
@@ -36,19 +36,18 @@ preprocess_ref_func <- function(cta) cta@preprocess_ref
 
 # `run_full` function implementation -------------------------------------------
 
-
 run_full <- function(cta_interface, expr_data, ref_data, convert_to, ...) {
   #' Runs `annotate_func` then `convert_func` on a data set
   #'
+  #' @param cta_interface a `CTAInterface` object that has implemented 
+  #' `annotate` and `convert` functions for a specific tool, according to which 
+  #' the annotation process will be done
   #' @param expr_data experimental data, on which CTA is performed
   #' @param ref_data reference/marker data for the CTA anaysis
-  #' @param labels string name of the labels column in `ref_data`
-  #' @param annot_type which type of CTA to perform <marker/ref>
-  #' @param annot_tools `character` of test names to perform, '*' selects all
   #' @param convert_to output data format
-  #' @param tool_interfaces list of interfaces the program will use
   #'
-  #' @returns a list of  test_name -> test_results
+  #' @returns the annotation results from `cta_interface`, formatted to the 
+  #' `convert_to` format
 
   expr_data <- preprocess_expr_func(cta_interface)(expr_data, ...)
   ref_data <- preprocess_ref_func(cta_interface)(ref_data, ...)

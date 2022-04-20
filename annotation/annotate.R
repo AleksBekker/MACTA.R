@@ -41,18 +41,17 @@ annotate <- function(expr_data, ref_data, annot_type, annot_tools = "*",
     expr_type = "logcounts",
     ref_type = "logcounts",
     labels = NULL
-  )
+  ) %>% c(list(...), .)
 
-  args <- c(list(...), args)
-
+  # Validate `annot_type`
+  
+  if (!annot_type %in% c('ref', 'marker')) {
+    stderr("Invalid `annot_type`.")
+  }
+  
   # Get `expr_data` and `ref_data` assays from within original objects
-  if (!is(expr_data, "Matrix") & !is(expr_data, "matrix")) {
-    expr_data <- get_assay_data(expr_data, args$expr_type)
-  }
-
-  if (!is(ref_data, "Matrix") & !is(ref_data, "matrix")) {
-    ref_data <- get_assay_data(ref_data, args$ref_type)
-  }
+  expr_data <- get_assay_data(expr_data, args$expr_type)
+  ref_data <- get_assay_data(ref_data, args$ref_type)
 
   # Process `annot_tools`
   if (identical(annot_tools, "*")) {
