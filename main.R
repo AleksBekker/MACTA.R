@@ -33,7 +33,11 @@ parse_cli_args <- function() {
       type = "character",
       dest = "annot_tools",
       default = "*",
-      help = 'list of tools to be used in analysis, delimited by `,`s, "*" for all [default %default]'
+      help = paste(
+        "list of tools to be used in analysis, delimited by `,`s, "*" for all",
+        "[default %default]",
+        sep = ""
+      )
     ),
     make_option(
       c("-o", "--output"),

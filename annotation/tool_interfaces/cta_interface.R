@@ -12,34 +12,32 @@ CTAInterface <- setClass(
 
   # Slots
   slots = c(
-    annotate_func = "function",
-    convert_func = "function"
+    annotate = "function",
+    convert = "function",
+    preprocess_expr = "function",
+    preprocess_ref = "function"
   ),
 
   # Default values
   prototype = list(
-    annotate_func = function(expr_data, ref_data, labels, 
-                             expr_type = "logcounts", ref_type = "logcounts", 
-                             ...) {
-      stderr("`annotation_func` must be implemented by subclasses")
-    },
-    convert_func = function(results, convert_to, ...) {
-      stderr("`conversion_func` must be implemented by subclasses")
-    }
+    annotate = function(expr_data, ref_data, ...) stderr("Not Yet Implemented"),
+    convert = function(results, convert_to, ...) stderr("Not Yet Implemented"),
+    preprocess_expr = function(expr_data, ...) expr_data,
+    preprocess_ref = function(ref_data, ...) ref_data
   )
 )
 
 # `annotate_func` and `convert_func` getters -----------------------------------
 
-annotate_func <- function(cta_interface) cta_interface@annotate_func
-convert_func <- function(cta_interface) cta_interface@convert_func
+annotate_func <- function(cta) cta@annotate
+convert_func <- function(cta) cta@convert
+preprocess_expr_func <- function(cta) cta@preprocess_expr
+preprocess_ref_func <- function(cta) cta@preprocess_ref
 
 # `run_full` function implementation -------------------------------------------
 
 
-run_full <- function(cta_interface, expr_data, ref_data, labels,
-                     convert_to, expr_type = "logcounts",
-                     ref_type = "logcounts", ...) {
+run_full <- function(cta_interface, expr_data, ref_data, convert_to, ...) {
   #' Runs `annotate_func` then `convert_func` on a data set
   #'
   #' @param expr_data experimental data, on which CTA is performed
@@ -52,14 +50,10 @@ run_full <- function(cta_interface, expr_data, ref_data, labels,
   #'
   #' @returns a list of  test_name -> test_results
 
-  expr_data = preprocess_expr_func(cta_interface)(expr_data, ...)
-  ref_data = preprocess_ref_func(cta_interface)(ref_data, ...)
-  labels = preprocess_labels_func(cta_interface)(labels, ref_data, ...)
-  convert_to = preprocess_convert_to_func(cta_interface)(convert_to, ...)
-  
-  annotate_func(cta_interface)(expr_data, ref_data, labels, 
-                               expr_type = expr_type, ref_type = ref_type,
-                               ...) %>%
+  expr_data <- preprocess_expr_func(cta_interface)(expr_data, ...)
+  ref_data <- preprocess_ref_func(cta_interface)(ref_data, ...)
+
+  annotate_func(cta_interface)(expr_data, ref_data, ...) %>%
     convert_func(cta_interface)(convert_to, ...) %>%
     return()
 }
