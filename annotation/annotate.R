@@ -1,6 +1,6 @@
 
-library(Seurat)
-library(SingleCellExperiment)
+suppressWarnings(library(Seurat))
+suppressWarnings(library(SingleCellExperiment))
 
 source("utils/get_assay_data.R")
 

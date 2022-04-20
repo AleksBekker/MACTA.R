@@ -1,6 +1,6 @@
 
-library(Seurat)
-library(SummarizedExperiment)
+suppressWarnings(library(Seurat))
+suppressWarnings(library(SummarizedExperiment))
 
 get_assay_data <- function(object, assay) {
   if (is(object, "Matrix") | is(object, "matrix")) {
