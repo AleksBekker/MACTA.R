@@ -21,10 +21,12 @@ SCINA_interface <- CTAInterface(
     ) %>% c(list(...), .)
 
     if (args$expr_type == "counts") {
-      exp[] = expr_data %>%
-        as.matrix() %>%
+      exp <- expr_data %>%
         log(. + 1) %>%
         normalize.quantiles()
+        # TODO: run this through `normalize.quantiles()`
+      rownames(exp) <- rownames(expr_data)
+      colnames(exp) <- colnames(expr_data)
       return(exp)
     }
 

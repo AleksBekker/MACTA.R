@@ -61,7 +61,8 @@ parse_cli_args <- function() {
 }
 
 main <- function() {
-
+  source("data/load_SCINA_examples.R")
+  annotate(expr_data, as.list(ref_data), "marker")
 }
 
 main()

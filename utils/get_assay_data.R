@@ -3,7 +3,7 @@ suppressWarnings(library(Seurat))
 suppressWarnings(library(SummarizedExperiment))
 
 get_assay_data <- function(object, assay) {
-  if (is(object, "Matrix") | is(object, "matrix")) {
+  if (is(object, "Matrix") | is(object, "matrix") | is(object, "list")) {
     return(object)
   }
   
@@ -18,4 +18,6 @@ get_assay_data <- function(object, assay) {
   if (is(object, "data.frame")) {
     return(as.matrix(object))
   }
+  
+  stderr("Invalid `object` in `get_assay_data`")
 }

@@ -28,7 +28,7 @@ SingleR_interface <- CTAInterface(
     SingleR(
       test = expr_data,
       ref = ref_data,
-      labels = args.labels,
+      labels = args$labels,
       assay.type.test = args$expr_type,
       assay.type.ref = args$ref_type
     ) %>% return()
