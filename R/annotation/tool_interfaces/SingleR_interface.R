@@ -1,8 +1,4 @@
 
-suppressWarnings(library(SingleR))
-
-suppressWarnings(library(magrittr))
-
 source("annotation/tool_interfaces/cta_interface.R")
 
 
@@ -25,13 +21,15 @@ SingleR_interface <- CTAInterface(
     ) %>% c(list(...), .)
 
     # Run `SingleR` analysis
-    SingleR(
+    pred <- SingleR::SingleR(
       test = expr_data,
       ref = ref_data,
       labels = args$labels,
       assay.type.test = args$expr_type,
       assay.type.ref = args$ref_type
-    ) %>% return()
+    )
+
+    return(pred)
   },
   convert = function(results, convert_to, ...) {
     #' Converts `SingleR` results to standard format
@@ -42,8 +40,10 @@ SingleR_interface <- CTAInterface(
     #'
     #' @returns `SingleR` results in `convert_to` format
 
-    switch(convert_to,
-      "labels" = results$labels
-    ) %>% return()
+    return(
+      switch(convert_to,
+        "labels" = results$labels
+      )
+    )
   }
 )

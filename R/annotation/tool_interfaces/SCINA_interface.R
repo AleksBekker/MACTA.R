@@ -4,11 +4,11 @@ suppressWarnings(library(SCINA))
 
 suppressWarnings(library(magrittr))
 
-source("annotation/tool_interfaces/cta_interface.R")
+source("R/annotation/tool_interfaces/cta_interface.R")
 
 SCINA_interface <- CTAInterface(
   annotate = function(expr_data, ref_data, ...) {
-    SCINA(expr_data, ref_data) %>% return()
+    SCINA::SCINA(expr_data, ref_data) %>% return()
   },
   convert = function(results, convert_to, ...) {
     switch(convert_to,

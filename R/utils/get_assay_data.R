@@ -1,23 +1,20 @@
 
-suppressWarnings(library(Seurat))
-suppressWarnings(library(SummarizedExperiment))
-
 get_assay_data <- function(object, assay) {
   if (is(object, "Matrix") | is(object, "matrix") | is(object, "list")) {
     return(object)
   }
-  
+
   if (is(object, "Seurat")) {
-    return(GetAssayData(object, assay))
+    return(Seurat::GetAssayData(object, assay))
   }
 
   if (is(object, "SummarizedExperiment")) {
-    return(assay(object, assay))
+    return(SummarizedExperiment::assay(object, assay))
   }
-  
+
   if (is(object, "data.frame")) {
     return(as.matrix(object))
   }
-  
+
   stderr("Invalid `object` in `get_assay_data`")
 }
