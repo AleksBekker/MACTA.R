@@ -24,7 +24,6 @@ SCINA_interface <- CTAInterface(
       exp <- expr_data %>%
         log(. + 1) %>%
         normalize.quantiles()
-        # TODO: run this through `normalize.quantiles()`
       rownames(exp) <- rownames(expr_data)
       colnames(exp) <- colnames(expr_data)
       return(exp)
