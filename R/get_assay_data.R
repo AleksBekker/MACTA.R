@@ -1,6 +1,5 @@
-
 get_assay_data <- function(object, assay) {
-  if (is(object, "Matrix") | is(object, "matrix") | is(object, "list")) {
+  if (is(object, "Matrix") || is(object, "matrix") || is(object, "list")) {
     return(object)
   }
 
@@ -16,5 +15,5 @@ get_assay_data <- function(object, assay) {
     return(as.matrix(object))
   }
 
-  stderr("Invalid `object` in `get_assay_data`")
+  stop("Invalid `object` in `get_assay_data`")
 }

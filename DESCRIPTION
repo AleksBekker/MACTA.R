@@ -1,15 +1,14 @@
-Package: MACTA.R
-Title: Multiple Automated Cell Type Annotation in R Lang
+Package: MACTA
+Title: Multi-tool Automated Cell Type Annotation
 Version: 0.0.1
-Authors@R: 
-    person("Aleksandr", "Bekker", "alekso.bekker@gmail.com", role = c("aut", "cre"))
-Description: Runs and compiles results from multiple cell type annotation 
-License: GPL-3.0
+Authors@R: c(
+  person(
+    "Aleksandr", "Bekker", 
+    email = "alekso.bekker@gmail.com", 
+    role = c("aut", "cre")
+  )
+)
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
-Imports:
-        preprocessCore (>=1.58.0)
-        SCINA (>=1.2.0)
-        Seurat (>=4.1.0)
-        SummarizedExperiment(>=1.26.0)
+RoxygenNote: 7.2.0
