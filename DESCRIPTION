@@ -8,6 +8,6 @@ License: GPL-3
 Authors@R: c(person("Aleksandr", "Bekker", role = c("aut", "cre"),
   email = "alekso.bekker@gmail.com"))
 Encoding: UTF-8
-Depends: R (>=4.0)
+Depends: R (>= 4.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
