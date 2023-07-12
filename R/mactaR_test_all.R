@@ -60,3 +60,7 @@ processed_reference = preprocess_reference(markerList)
 scina.res = scina_annotate(processed_query,processed_reference)
 scina.labels = scina_convert(scina.res)
 pheatmap(table(scina.labels,query$cell_type),scale="row",cluster_rows=F,cluster_cols=F)
+
+source("mactaR_run_symphony.R")
+processed_query = preprocess_query(query)
+processed_reference = symphony_preprocess_reference(reference)
