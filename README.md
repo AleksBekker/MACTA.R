@@ -9,11 +9,15 @@ R package for running multiple automated cell type annotation packages
 - UCell - Uploaded
 - scPred - Uploaded
 - scCATCH - Uploaded
+- Symphony - Uploaded
 - scMAP
 - scMRMA
 - scSorter
-- Symphony
 - scMAGIC
+
+## Testing
+
+Run the test_all script, it creates the needed objects. You'll need to have the packages first though. I'm working on a conda env file to get those into R for now
 
 ## Current task list:
 
