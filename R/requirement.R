@@ -1,6 +1,6 @@
 # ---- REQUIREMENT CLASS DEFINITION ----
 
-Requirement <- function(value, validator) {
+requirement <- function(value, validator) {
     obj <- list(value = value, validator = validator)
     attr(obj, "class") <- "Requirement"
     obj
@@ -37,8 +37,8 @@ contains_validator <- function(value, other_value) {
 
 #' @export
 strict_list_type_validator <- function(values, other_value) {
-    names_rq <- Requirement(values[1], is_validator)
-    values_rq <- Requirement(values[2], is_validator)
+    names_rq <- requirement(values[1], is_validator)
+    values_rq <- requirement(values[2], is_validator)
 
     is(other_value, list) &
         are_compatible(names_rq, names(other_value)) &

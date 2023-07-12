@@ -11,11 +11,19 @@ Authors@R: c(
   person("Nikolaos", "Kalavros", role = c("aut"),
          email = "nkalavro@bidmc.harvard.edu"))
 Encoding: UTF-8
-Depends: R (>= 4.0)
-Imports: Seurat,
+Depends: R (>= 4.0), methods
+Imports:
   preprocessCore,
   SCINA,
+  Seurat,
   SingleR,
-  SummarizedExperiment
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
+Collate: 
+    'annotate.R'
+    'requirement_list.R'
+    'cta_interface.R'
+    'get_assay_data.R'
+    'label_processing.R'
+    'package.R'
+    'requirement.R'

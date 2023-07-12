@@ -1,6 +1,6 @@
 SCINA_interface <- CTAInterface(
   rq_list = RequirementList(
-    annot_type = Requirement("marker", strict_validator)
+    annot_type = requirement("marker", strict_validator)
   ),
   annotate = function(expr_data, ref_data, ...) {
     SCINA::SCINA(expr_data, ref_data)
