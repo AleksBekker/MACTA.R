@@ -3,12 +3,12 @@
 R package for running multiple automated cell type annotation packages
 
 ## Implemented tools:
-- SingleR
-- SCINA
-- Garnett
-- UCell
-- scPred
-- scCATCH
+- SingleR - Uploaded
+- SCINA - Uploaded
+- Garnett - Uploaded
+- UCell - Uploaded
+- scPred - Uploaded
+- scCATCH - Uploaded
 - scMAP
 - scMRMA
 - scSorter

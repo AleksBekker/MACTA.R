@@ -46,6 +46,7 @@ sccatch_list_tissues()
 #annotation is cluster level!!!!
 sccatch.res = sccatch_annotate(seur_obj = processed_query,tissue = "Blood",species="Human")
 pheatmap(as.data.frame.matrix(table(sccatch.res@celltype$cluster, sccatch.res@celltype$cell_type)))
+
 source("mactaR_run_SingleR.R")
 processed_query = preprocess_query(query)
 processed_reference = preprocess_reference(reference)
@@ -53,3 +54,9 @@ singler.res = singler_annotate(query,reference)
 singler.labels = singler_convert(singler.res)
 pheatmap(as.data.frame.matrix(table(singler.labels,query$cell_type)),scale="row",cluster_rows=F,cluster_cols=F)
 
+source("mactaR_run_SCINA.R")
+processed_query = preprocess_query(query)
+processed_reference = preprocess_reference(markerList)
+scina.res = scina_annotate(processed_query,processed_reference)
+scina.labels = scina_convert(scina.res)
+pheatmap(table(scina.labels,query$cell_type),scale="row",cluster_rows=F,cluster_cols=F)
