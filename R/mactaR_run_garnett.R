@@ -22,11 +22,10 @@ markerlist_to_garnettfile <- function(markerList){
   }else{
     for(i in seq(1,length(markerList))){
       initstring = c(initstring,paste(">",names(markerList)[[i]],sep=""))
-      #initstring = c(initstring,"\n")
       initstring = c(initstring,paste("expressed:", paste(markerList[[i]],sep="",collapse=", ")))
-      #initstring = c(initstring,"\n")
     }
   }
+  #Feel free to change this to tempfile
   fileConn<-file("garnett_markertable.txt")
   writeLines(initstring, fileConn)
   close(fileConn)
@@ -37,32 +36,31 @@ markerlist_to_garnettfile <- function(markerList){
 garnett_train_classifier <- function(cds,
                                      marker_file_path, 
                                      db,
-                                     ...){
-  args = list(
-    ...,
-    cds_gene_id_type = "SYMBOL",
-    num_unknown=50, 
-    marker_file_gene_id_type = "SYMBOL") 
-  if("garnett_classifier_path" %in% names(args)){
-    if(file.exists(args$garnett_classifier_path)){
-      classifier = readRDS(args$garnett_classifier_path)
+                                     cds_gene_id_type="SYMBOL",
+                                     num_unknown=50,
+                                     marker_file_gene_id_type="SYMBOL",
+                                     garnett_classifier_path=NULL){
+
+  if(!is.null(garnett_classifier_path)){
+    if(file.exists(garnett_classifier_path)){
+      classifier = readRDS(garnett_classifier_path)
     }else{
       classifier <- train_cell_classifier(cds = cds,
                                           marker_file = marker_file_path,
                                           db=db,
-                                          cds_gene_id_type = args$cds_gene_id_type,
-                                          marker_file_gene_id_type = args$marker_file_gene_id_type,
-                                          num_unknown = args$num_unknown
+                                          cds_gene_id_type = cds_gene_id_type,
+                                          marker_file_gene_id_type = marker_file_gene_id_type,
+                                          num_unknown = num_unknown
       )
-      saveRDS(classifier,args$garnett_classifier_path)
+      saveRDS(classifier,garnett_classifier_path)
     }
     }else{
       classifier <- train_cell_classifier(cds = cds,
                                           marker_file = markier_file_path,
                                           db=db,
-                                          cds_gene_id_type = args$cds_gene_id_type,
-                                          marker_file_gene_id_type = args$marker_file_gene_id_type,
-                                          num_unknown = args$num_unknown
+                                          cds_gene_id_type = cds_gene_id_type,
+                                          marker_file_gene_id_type = marker_file_gene_id_type,
+                                          num_unknown = num_unknown
       )
     }
     
@@ -73,16 +71,11 @@ garnett_train_classifier <- function(cds,
 # @param seur_obj, your seurat object
 # @param assay, which assay you'll grab
 # @param slot, which slot of your assay you'll grab
-seurat_to_garnettcds.query <- function(seur_obj,...){
-  args <- list(
-    ...,
-    assay="RNA",
-    slot="counts"
-  )
-  
+seurat_to_garnettcds.query <- function(seur_obj,assay="RNA",slot="counts"){
+
   phenoData <- new("AnnotatedDataFrame", data = seur_obj@meta.data)
-  featureData <- new("AnnotatedDataFrame", data = seur_obj[[args$assay]][[]])
-  expr_mat <- GetAssayData(seur_obj,assay=args$assay,slot=args$slot)
+  featureData <- new("AnnotatedDataFrame", data = seur_obj[[assay]][[]])
+  expr_mat <- GetAssayData(seur_obj,assay=assay,slot=slot)
   celldataset <- newCellDataSet(expr_mat,
                                 phenoData = phenoData,
                                 featureData = featureData)
@@ -90,21 +83,19 @@ seurat_to_garnettcds.query <- function(seur_obj,...){
   return(celldataset)
 }
 
-seurat_to_garnettcds.reference <- function(seur_obj,markerList,...){
-  args <- list(
-    ...,
-    assay="RNA",
-    slot="counts",
-    cds_gene_id_type = "SYMBOL",
-    num_unknown=50,
-    marker_file_gene_id_type = "SYMBOL",
-    db = org.Hs.eg.db
-    
-  )
+seurat_to_garnettcds.reference <- function(seur_obj,
+                                           markerList,
+                                           garnett_classifier_path=NULL,
+                                           assay="RNA",
+                                           slot="counts",
+                                           cds_gene_id_type = "SYMBOL",
+                                           num_unknown=50,
+                                           marker_file_gene_id_type = "SYMBOL",
+                                           db = org.Hs.eg.db){
   
   phenoData <- new("AnnotatedDataFrame", data = seur_obj@meta.data)
-  featureData <- new("AnnotatedDataFrame", data = seur_obj[[args$assay]][[]])
-  expr_mat <- GetAssayData(seur_obj,assay=args$assay,slot=args$slot)
+  featureData <- new("AnnotatedDataFrame", data = seur_obj[[assay]][[]])
+  expr_mat <- GetAssayData(seur_obj,assay=assay,slot=slot)
   celldataset <- newCellDataSet(expr_mat,
                                 phenoData = phenoData,
                                 featureData = featureData)
@@ -112,11 +103,11 @@ seurat_to_garnettcds.reference <- function(seur_obj,markerList,...){
   markerlist_to_garnettfile(markerList)
   classifier <- garnett_train_classifier(celldataset,
                                          "garnett_markertable.txt", 
-                                         args$db,
-                                         cds_gene_id_type = args$cds_gene_id_type,
-                                         marker_file_gene_id_type = args$marker_file_gene_id_type,
-                                         num_unknown = args$num_unknown,
-                                         ...
+                                         db,
+                                         cds_gene_id_type = cds_gene_id_type,
+                                         marker_file_gene_id_type = marker_file_gene_id_type,
+                                         num_unknown = num_unknown,
+                                         garnett_classifier_path = garnett_classifier_path
   )
   return(classifier)
 }
@@ -261,29 +252,40 @@ make_predictions.custom <- function (cds, classifier, curr_node, rank_prob_ratio
 }
 assignInNamespace("make_predictions", make_predictions.custom, ns = "garnett")
 # Wrapper for the Garnett function. Check that function's documentation (granett::classify_cells). 
-garnett_annotate <- function(cds, classifier,...){
-  args <- list(
-    ...,
-    db = org.Hs.eg.db,
-    cluster_extend= T,
-    cds_gene_id_type = "SYMBOL"
-  )
+garnett_annotate <- function(cds,
+                             classifier,
+                             db = org.Hs.eg.db,
+                             cluster_extend= T,
+                             cds_gene_id_type = "SYMBOL"){
   #This one was actually not as simple, this is code extracted from their package to get the labels.df format.
   cds <- classify_cells(cds, classifier,
-                        db = args$db,
-                        cluster_extend = args$cluster_extend,
-                        cds_gene_id_type = args$cds_gene_id_type)
-  if(args$cluster_extend){
-    labels.df = readRDS("garnett_predictions.RDS")
-    labels = unlist(pData(cds)[c("cluster_ext_type")])
-  }else{
-    labels = unlist(pData(cds)[c("cluster_ext_type")])
-  }
-  return(labels)
+                        db = db,
+                        cluster_extend = cluster_extend,
+                        cds_gene_id_type = cds_gene_id_type)
+  return(list(cds, cluster_extend))
 }
-# TODO: I should re-list the params here. Add timers.
 
+garnett_convert <- function(garnet.res,labels="labels",score_scaling="raw"){
+  cluster_extend = garnet.res[[2]]
+  labels.df = readRDS("garnett_predictions.RDS")
+  colnames(labels.df) = gsub(".1","",colnames(labels.df),fixed=T)
+  if(cluster_extend){
+    labels.vec = unlist(pData(garnet.res[[1]])[c("cluster_ext_type")])
+  }else{
+    labels.vec = unlist(pData(garnet.res[[1]])[c("cluster_ext_type")])
+  }
+  if(labels == "labels"){
+    return(labels.vec)
+  }else if(labels=="scores"){
+    stop("Not implemented for Garnett")
+    if(score_scaling == "raw"){
+      return(labels.df)
+    }else{
+      stop("Not implemented yet")
+    }
+  }
+}
 
-#TODO: Ask Aleks about the CTAInterface.
-
-
+#For consistency
+garnet_preprocess_query = seurat_to_garnettcds.query
+garnet_preprocess_reference = seurat_to_garnettcds.reference

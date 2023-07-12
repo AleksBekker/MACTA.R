@@ -18,22 +18,14 @@ sccatch_list_species <- function(demo_marker = cellmatch){
 # @param geneinfo - Gene info dataframe, check vignette here for format: https://cran.r-project.org/web/packages/scCATCH/vignettes/tutorial.html
 # @param Tissue - Uhh, Tissue.
 # @param Species - Uhh, Species.
-preprocess_query <- function(seur_obj){
-  return(seur_obj)
-}
 
-preprocess_reference <- function(...){
-  return("Preprocess reference not needed for scCATCH")
-}
-
-sccatch_annotate <- function(seur_obj, geneinfo,cluster_column, tissue,species,...){
-  args = list(
-    ...,
-    assay="RNA",
-    slot="data"
-  )
-  mat <- rev_gene(data = GetAssayData(seur_obj,assay = args$assay,slot = args$slot), data_type = "data", species = species, geneinfo = geneinfo)
-  obj <- createscCATCH(data = mat, cluster = unlist(seur_obj[[cluster_column]]))
+sccatch_annotate <- function(seur_obj, geneinfo= scCATCH::geneinfo,cluster_column, tissue,species,assay="RNA",slot="data"){
+  seur_obj$celltype = as.character(Idents(seur_obj))
+  mat <- rev_gene(data = GetAssayData(seur_obj,assay = assay,slot = slot),
+                  data_type = "data",
+                  species = species,
+                  geneinfo = geneinfo)
+  obj <- createscCATCH(data = mat, cluster = unlist(seur_obj$celltype))
   obj <- findmarkergene(object = obj, species = "Human", marker = cellmatch, tissue = tissue,use_method = "1")
   obj <- findcelltype(object = obj)
   labels <- obj@celltype

@@ -1,4 +1,3 @@
-.libPaths("/home/nk270/R-4.0.1/library/")
 library(Seurat)
 library(pheatmap)
 #Load two random objects
