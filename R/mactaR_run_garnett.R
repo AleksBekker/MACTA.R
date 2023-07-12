@@ -268,6 +268,8 @@ garnett_annotate <- function(cds,
 garnett_convert <- function(garnet.res,labels="labels",score_scaling="raw"){
   cluster_extend = garnet.res[[2]]
   labels.df = readRDS("garnett_predictions.RDS")
+  file.remove("garnett_predictions.RDS")
+  file.remove("garnett_markertable.txt")
   colnames(labels.df) = gsub(".1","",colnames(labels.df),fixed=T)
   if(cluster_extend){
     labels.vec = unlist(pData(garnet.res[[1]])[c("cluster_ext_type")])
