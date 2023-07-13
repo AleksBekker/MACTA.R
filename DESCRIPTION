@@ -27,3 +27,4 @@ Collate:
     'label_processing.R'
     'package.R'
     'requirement.R'
+LazyData: true
