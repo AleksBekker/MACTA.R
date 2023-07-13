@@ -12,8 +12,12 @@ R package for running multiple automated cell type annotation packages
 - Symphony - Uploaded
 - scMAP - Uploaded
 - scMRMA - Uploaded
+- scType
+- scMappR
 - scSorter
 - scMAGIC
+- scAnnotate
+- singleCellNet
 
 ## Testing
 

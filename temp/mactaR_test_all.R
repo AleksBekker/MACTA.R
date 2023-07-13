@@ -76,3 +76,5 @@ processed_reference = scmap_preprocess_reference(reference)
 scmap.res = scmap_annotate(processed_query,processed_reference)
 scmap.labels = scmap_convert(scmap.res)
 pheatmap(table(scmap.res$combined_labs,query$cell_type),scale="row",cluster_rows=F,cluster_cols=F)
+
+
