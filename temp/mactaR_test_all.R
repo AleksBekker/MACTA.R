@@ -62,13 +62,17 @@ scina.res = scina_annotate(processed_query,processed_reference)
 scina.labels = scina_convert(scina.res)
 pheatmap(table(scina.labels,query$cell_type),scale="row",cluster_rows=F,cluster_cols=F)
 
-source("mactaR_run_symphony.R")
 processed_query = preprocess_query(query)
 processed_reference = symphony_preprocess_reference(reference)
 
-
-source("mactaR_run_scMRMA.R")
+processed_query = preprocess_query(query)
+processed_reference = scmrma_preprocess_reference(markerList)
 scMRMA.res = scMRMA_annotate(query)
 scMRMA.labels = scMRMA_convert(scMRMA.res)
 pheatmap(table(scMRMA.labels,query$cell_type),scale="row",cluster_rows=F,cluster_cols=F)
 
+processed_query = preprocess_query(query)
+processed_reference = scmap_preprocess_reference(reference)
+scmap.res = scmap_annotate(processed_query,processed_reference)
+scmap.labels = scmap_convert(scmap.res)
+pheatmap(table(scmap.res$combined_labs,query$cell_type),scale="row",cluster_rows=F,cluster_cols=F)
