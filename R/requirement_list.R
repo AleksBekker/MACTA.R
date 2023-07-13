@@ -1,6 +1,10 @@
 # ---- REQUIREMENT_LIST CLASS DEFINITION ----
 
-methods::setClass(
+#' Grouped requirements all to be applied to a single object
+#'
+#' @slot requirements list of `interface_parameter` -> Requirement
+#' @export
+setClass(
 
     # NAME
     "RequirementList",

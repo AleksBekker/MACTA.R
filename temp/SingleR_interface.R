@@ -1,6 +1,6 @@
 SingleR_interface <- CTAInterface(
   rq_list = RequirementList(
-    annot_type = Requirement("ref", strict_validator)
+    annot_type = requirement("ref", strict_validator)
   ),
   annotate = function(expr_data, ref_data, ...) {
     #' Performs `SingleR` annotation

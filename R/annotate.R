@@ -21,10 +21,9 @@ annotate <- function(expr_data, ref_data, annot_type, annot_tools = "*",
                        "SingleR" = SingleR_interface,
                        "SCINA" = SCINA_interface,
                      ), ...) {
-
   # Merge default arguments with ... arguments
   args <- list(
-    list(...),
+    ...,
     expr_type = "logcounts",
     ref_type = "logcounts",
     labels = NULL,
@@ -36,7 +35,7 @@ annotate <- function(expr_data, ref_data, annot_type, annot_tools = "*",
     stop("Invalid `annot_type`.")
   }
 
-  if (!is(expr_data, Seurat::Seurat)) {
+  if (!is(expr_data, Seurat)) {
     stop("`expr_data` must be a `Seurat` object")
   }
 

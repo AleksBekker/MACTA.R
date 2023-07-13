@@ -1,9 +1,21 @@
 # `CTAInterface` class declaration ---------------------------------------------
 
-CTAInterface <- methods::setClass(
+#' @include requirement_list.R
+NULL
 
-  # Name
-  "CTAInterface",
+#' An S4 class to represent an interface to a cell type annotation tool
+#'
+#' @slot rq_list `RequirementList` for interface parameters
+#' @slot annotate function that performs annotation
+#' @slot convert function that converts results from `annotate` to the format
+#' dictated by the user
+#' @slot preprocess_expr function that transforms expression data into the
+#' format required by an annotation tool
+#' @slot preprocess_ref fucntion that transforms reference data into the format
+#' required by an annotation tool
+#' @export
+#'
+setClass("CTAInterface",
 
   # Slots
   slots = c(

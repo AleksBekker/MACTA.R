@@ -7,9 +7,9 @@ get_assay_data <- function(object, assay) {
     return(Seurat::GetAssayData(object, assay))
   }
 
-  if (is(object, "SummarizedExperiment")) {
-    return(SummarizedExperiment::assay(object, assay))
-  }
+  # if (is(object, "SummarizedExperiment")) {
+  #   return(SummarizedExperiment::assay(object, assay))
+  # }
 
   if (is(object, "data.frame")) {
     return(as.matrix(object))
