@@ -11,7 +11,7 @@ R package for running multiple automated cell type annotation packages
 - scCATCH - Uploaded
 - Symphony - Uploaded
 - scMAP
-- scMRMA
+- scMRMA - Uploaded
 - scSorter
 - scMAGIC
 
